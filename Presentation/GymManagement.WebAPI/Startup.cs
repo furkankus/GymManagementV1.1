@@ -1,3 +1,4 @@
+using GymManagement.Application.DependencyContainers;
 using GymManagement.Infrastructure.DependencyContainers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +23,8 @@ namespace GymManagement.WebAPI
         {
 
             services.AddControllers();
-
+            services.AddApplicationServices();
+            services.AddInfrastructureServices(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GymManagement.WebAPI", Version = "v1" });
