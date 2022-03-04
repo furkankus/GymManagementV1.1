@@ -22,8 +22,4 @@
     <ProjectReference Include="..\..\Infrastructure\GymManagement.Infrastructure\GymManagement.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
