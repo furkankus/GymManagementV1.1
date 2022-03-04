@@ -17,13 +17,11 @@ namespace GymManagement.WebAPI
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
@@ -43,11 +41,8 @@ namespace GymManagement.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GymManagement.WebAPI v1"));
             }
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
