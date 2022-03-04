@@ -28,38 +28,6 @@ namespace GymManagement.Application.Services
             return _mapper.Map<List<EquipmentQueryViewModel>>(equipments);
         }
 
-        public bool Create(Equipment model)
-        {
-            var equipment = _mapper.Map<Equipment>(model);
-            equipment.MaintenancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
-            _unitOfWork.Equipments.Create(equipment);
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool Update(Equipment model, int id)
-        {
-            var equipment = _mapper.Map<Equipment>(model);
-            var getByEquipment = _unitOfWork.Equipments.GetById(id);
-
-            if (getByEquipment is null)
-            {
-                throw new InvalidOperationException("Equipment not found");
-            }
-
-            equipment.MaintenancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
-            _unitOfWork.Equipments.Update(equipment);
-
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
-        }
-
         public bool Delete(int id)
         {
             var equipment = _unitOfWork.Equipments.GetById(id);
@@ -74,7 +42,39 @@ namespace GymManagement.Application.Services
             return false;
 
         }
-        
+
+        public bool Create(EquipmentCommandViewModel model)
+        {
+            var equipment = _mapper.Map<Equipment>(model);
+            equipment.MaintanancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
+            _unitOfWork.Equipments.Create(equipment);
+            if (_unitOfWork.SaveChanges())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool Update(EquipmentCommandViewModel model, int id)
+        {
+            var equipment = _mapper.Map<Equipment>(model);
+            equipment.Id = id;
+            var getByEquipment = _unitOfWork.Equipments.GetById(id);
+
+            if (getByEquipment is null)
+            {
+                throw new InvalidOperationException("Equipment not found");
+            }
+
+            equipment.MaintanancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
+            _unitOfWork.Equipments.Update(equipment);
+
+            if (_unitOfWork.SaveChanges())
+            {
+                return true;
+            }
+            return false;
+        }
     }
     
 }

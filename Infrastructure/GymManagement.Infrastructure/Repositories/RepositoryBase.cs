@@ -40,7 +40,7 @@ namespace GymManagement.Infrastructure.Repositories
 
         public T GetById(int id)
         {
-            return _dbSet.Where(t => t.IsDeleted == false).SingleOrDefault( p => p.Id == id);
+            return _dbSet.AsNoTracking().Where(t => t.IsDeleted == false).SingleOrDefault( p => p.Id == id);
         }
 
         public void Update(T entity)

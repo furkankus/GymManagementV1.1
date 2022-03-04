@@ -48,6 +48,7 @@ namespace GymManagement.Application.Services
                 throw new InvalidCastException("Campaign not found");
             }
             var vmModel = _mapper.Map<Campaign>(model);
+            vmModel.Id = id;
             _unitOfWork.Campaigns.Update(vmModel);
             if (_unitOfWork.SaveChanges())
             {
