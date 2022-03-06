@@ -9,6 +9,5 @@ namespace GymManagement.Application.Interfaces.ServiceInterfaces
         List<TrainerQueryViewModel> GetTrainersWithEmployeeDetail();
         //bool AddMemberExerciseProgram(string memberId);
         bool EquipmentMaintenanceControl(int equipmentId);
-        object GetTrainersWithEmployeeDetail();
     }
 }
