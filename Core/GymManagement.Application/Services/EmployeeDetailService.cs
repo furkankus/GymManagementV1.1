@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GymManagement.Application.Exception;
 
 namespace GymManagement.Application.Services
 {
@@ -35,7 +36,7 @@ namespace GymManagement.Application.Services
         public bool Update(EmployeeDetail model, int id)
         {
             var employeeDetail = _unitOfWork.EmployeeDetails.GetById(id);
-
+            employeeDetail.IfIsNullThrowNotFoundException("Employee Detail", id);
             _unitOfWork.EmployeeDetails.Update(model);
             if (_unitOfWork.SaveChanges())
             {
@@ -48,7 +49,7 @@ namespace GymManagement.Application.Services
         public bool Delete(int id)
         {
             var employeeDetail = _unitOfWork.EmployeeDetails.GetById(id);
-
+            employeeDetail.IfIsNullThrowNotFoundException("Employee Detail", id);
             employeeDetail.IsDeleted = true;
             _unitOfWork.EmployeeDetails.Update(employeeDetail);
             if (_unitOfWork.SaveChanges())

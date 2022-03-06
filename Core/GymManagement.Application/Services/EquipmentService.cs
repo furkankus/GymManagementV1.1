@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GymManagement.Application.Exception;
 
 namespace GymManagement.Application.Services
 {
@@ -31,7 +32,7 @@ namespace GymManagement.Application.Services
         public bool Delete(int id)
         {
             var equipment = _unitOfWork.Equipments.GetById(id);
-
+            equipment.IfIsNullThrowNotFoundException("Equipment", id);
             equipment.IsDeleted = true;
             _unitOfWork.Equipments.Update(equipment);
             if (_unitOfWork.SaveChanges())
@@ -61,10 +62,7 @@ namespace GymManagement.Application.Services
             equipment.Id = id;
             var getByEquipment = _unitOfWork.Equipments.GetById(id);
 
-            if (getByEquipment is null)
-            {
-                throw new InvalidOperationException("Equipment not found");
-            }
+            getByEquipment.IfIsNullThrowNotFoundException("Equipment", id);
 
             equipment.MaintanancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
             _unitOfWork.Equipments.Update(equipment);

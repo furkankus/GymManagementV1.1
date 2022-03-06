@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GymManagement.Application.Exception;
 
 namespace GymManagement.Application.Services
 {
@@ -45,10 +46,7 @@ namespace GymManagement.Application.Services
 
                 var getExerciseProgram = _unitOfWork.ExercisePrograms.GetById(id);
 
-                if (getExerciseProgram is null)
-                {
-                    throw new InvalidOperationException("ExerciseProgram not found");
-                }
+                getExerciseProgram.IfIsNullThrowNotFoundException("Exercise Program", id);
 
                 var vmModel = _mapper.Map<ExerciseProgram>(model);
                 vmModel.Id = id;
@@ -60,7 +58,7 @@ namespace GymManagement.Application.Services
             public bool Delete(int id)
             {
                 var exerciseProgram = _unitOfWork.ExercisePrograms.GetById(id);
-
+                exerciseProgram.IfIsNullThrowNotFoundException("Exercise Program" , id);
                 exerciseProgram.IsDeleted = true;
                 _unitOfWork.ExercisePrograms.Update(exerciseProgram);
                 return _unitOfWork.SaveChanges();

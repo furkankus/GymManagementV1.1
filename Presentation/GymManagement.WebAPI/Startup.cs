@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
+
 namespace GymManagement.WebAPI
 {
     public class Startup
@@ -26,6 +27,10 @@ namespace GymManagement.WebAPI
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
             services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
+            services.AddScoped<ITrainerService, TrainerService>();
+            services.AddScoped<IManagerService, ManagerService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GymManagement.WebAPI", Version = "v1" });

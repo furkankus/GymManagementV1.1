@@ -1,11 +1,8 @@
 ﻿using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GymManagement.Application.Exception;
 
 namespace GymManagement.Application.Services
 {
@@ -46,6 +43,7 @@ namespace GymManagement.Application.Services
             {
 
                 var workerContract = _unitOfWork.WorkerContracts.GetById(id);
+                workerContract.IfIsNullThrowNotFoundException("Worker Contract", id);
                 workerContract.IsDeleted = true;
 
                 _unitOfWork.WorkerContracts.Update(workerContract);
