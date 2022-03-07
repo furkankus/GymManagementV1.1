@@ -18,12 +18,15 @@ namespace GymManagement.Application.Services
         private readonly IMapper _mapper;
         private readonly SignInManager<Member> _signInManager;
         private readonly TokenGenerator _tokenGenerator;
+        readonly RoleGenerator _roleGenerator;
 
-        public AuthService(IMapper mapper, UserManager<Member> userManager, SignInManager<Member> signInManager)
+        public AuthService(IMapper mapper, UserManager<Member> userManager, SignInManager<Member> signInManager, RoleGenerator roleGenerator, TokenGenerator token)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleGenerator = roleGenerator;
+            _tokenGenerator = token;
         }
 
         public async Task<bool> Register(MemberRegisterViewModel registerViewModel)
@@ -34,7 +37,7 @@ namespace GymManagement.Application.Services
                 throw new InvalidOperationException("Email Mevcuttur.");
             var result = await _userManager.CreateAsync(member, registerViewModel.Password);
 
-            //Role Create Eklenecek....
+            _roleGenerator.CreateRoles();
 
             if (result.Succeeded)
             {

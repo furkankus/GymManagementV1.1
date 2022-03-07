@@ -1,11 +1,16 @@
 ﻿using GymManagement.Application.Interfaces.Repositories;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Domain.Entities;
 using GymManagement.Infrastructure.Contexts;
 using GymManagement.Infrastructure.Repositories;
 using GymManagement.Infrastructure.UnitOfWorks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace GymManagement.Infrastructure.DependencyContainers
 {
@@ -24,6 +29,23 @@ namespace GymManagement.Infrastructure.DependencyContainers
             services.AddScoped<ITrainerRepository, TrainerRepository>();
             services.AddScoped<IWorkerContractRepository, WorkerContractRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddIdentity<Member, IdentityRole>().AddEntityFrameworkStores<GymManagementDbContext>().AddDefaultTokenProviders();
+
+            services.AddAuthentication(options => 
+            { options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidAudience = configuration["Jwt:Audience"],
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
         }
     }
 }

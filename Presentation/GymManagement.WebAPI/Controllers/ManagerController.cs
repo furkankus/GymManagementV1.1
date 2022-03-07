@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.ViewModels.TrainerViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymManagement.WebAPI.Controllers
 {
     [Route("api/[controller]s")]
     [ApiController]
+    [Authorize(Roles="Admin")]
     public class ManagerController : ControllerBase
     {
         private readonly IManagerService _managerService;
