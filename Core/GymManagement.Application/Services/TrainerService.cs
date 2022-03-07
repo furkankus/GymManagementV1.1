@@ -48,9 +48,5 @@ namespace GymManagement.Application.Services
             return result;
         }
 
-        object ITrainerService.GetTrainersWithEmployeeDetail()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
