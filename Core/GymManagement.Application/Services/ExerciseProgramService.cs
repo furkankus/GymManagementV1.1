@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagement.Application.Exception;
+using GymManagement.Application.Validations;
+using FluentValidation;
 
 namespace GymManagement.Application.Services
 {
@@ -33,25 +35,22 @@ namespace GymManagement.Application.Services
 
             public bool Create(ExerciseProgramCommandViewModel model)
             {
+                var validator = new ExerciseProgramValidator();
+                validator.ValidateAndThrow(model);
                 var exerciseProgram = _mapper.Map<ExerciseProgram>(model);
-
                 _unitOfWork.ExercisePrograms.Create(exerciseProgram);
-
                 return _unitOfWork.SaveChanges();
             }
 
             public bool Update(ExerciseProgramCommandViewModel model, int id)
             {
-
-
+                var validator = new ExerciseProgramValidator();
+                validator.ValidateAndThrow(model);
                 var getExerciseProgram = _unitOfWork.ExercisePrograms.GetById(id);
-
                 getExerciseProgram.IfIsNullThrowNotFoundException("Exercise Program", id);
-
                 var vmModel = _mapper.Map<ExerciseProgram>(model);
                 vmModel.Id = id;
                 _unitOfWork.ExercisePrograms.Update(vmModel);
-
                 return _unitOfWork.SaveChanges();
             }
 

@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\GymManagement.Application\GymManagement.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\GymManagement.Infrastructure\GymManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

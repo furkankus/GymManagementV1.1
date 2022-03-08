@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagement.Application.Exception;
+using GymManagement.Application.Validations;
+using FluentValidation;
 
 namespace GymManagement.Application.Services
 {
@@ -46,18 +48,18 @@ namespace GymManagement.Application.Services
 
         public bool Create(EquipmentCommandViewModel model)
         {
+            var validator = new EquipmentValidator();
+            validator.ValidateAndThrow(model);
             var equipment = _mapper.Map<Equipment>(model);
             equipment.MaintanancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
             _unitOfWork.Equipments.Create(equipment);
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
+            return _unitOfWork.SaveChanges();
         }
 
         public bool Update(EquipmentCommandViewModel model, int id)
         {
+            var validator = new EquipmentValidator();
+            validator.ValidateAndThrow(model);
             var equipment = _mapper.Map<Equipment>(model);
             equipment.Id = id;
             var getByEquipment = _unitOfWork.Equipments.GetById(id);
@@ -66,12 +68,7 @@ namespace GymManagement.Application.Services
 
             equipment.MaintanancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
             _unitOfWork.Equipments.Update(equipment);
-
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
+            return _unitOfWork.SaveChanges();
         }
     }
     

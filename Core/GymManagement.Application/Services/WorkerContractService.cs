@@ -3,6 +3,8 @@ using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Domain.Entities;
 using System.Collections.Generic;
 using GymManagement.Application.Exception;
+using GymManagement.Application.Validations;
+using FluentValidation;
 
 namespace GymManagement.Application.Services
 {
@@ -27,28 +29,27 @@ namespace GymManagement.Application.Services
 
             public bool Create(WorkerContract model)
             {
+                var validator = new WorkerContractValidator();
+                validator.ValidateAndThrow(model);
                 _unitOfWork.WorkerContracts.Create(model);
-
                 return _unitOfWork.SaveChanges();
             }
 
             public bool Update(WorkerContract model, int id)
             {
+                var validator = new WorkerContractValidator();
+                validator.ValidateAndThrow(model);
                 _unitOfWork.WorkerContracts.Update(model);
-
                 return _unitOfWork.SaveChanges();
             }
 
             public bool Delete(int id)
             {
-
                 var workerContract = _unitOfWork.WorkerContracts.GetById(id);
                 workerContract.IfIsNullThrowNotFoundException("Worker Contract", id);
                 workerContract.IsDeleted = true;
-
                 _unitOfWork.WorkerContracts.Update(workerContract);
                 return _unitOfWork.SaveChanges();
             }
-        
     }
 }

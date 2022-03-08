@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagement.Application.Exception;
+using GymManagement.Application.Validations;
+using FluentValidation;
 
 namespace GymManagement.Application.Services
 {
@@ -24,6 +26,8 @@ namespace GymManagement.Application.Services
 
         public bool Create(EmployeeDetail model)
         {
+            var validator = new EmployeeDetailValidator();
+            validator.ValidateAndThrow(model);
             _unitOfWork.EmployeeDetails.Create(model);
             if (_unitOfWork.SaveChanges())
             {
@@ -35,6 +39,8 @@ namespace GymManagement.Application.Services
 
         public bool Update(EmployeeDetail model, int id)
         {
+            var validator = new EmployeeDetailValidator();
+            validator.ValidateAndThrow(model);
             var employeeDetail = _unitOfWork.EmployeeDetails.GetById(id);
             employeeDetail.IfIsNullThrowNotFoundException("Employee Detail", id);
             _unitOfWork.EmployeeDetails.Update(model);
