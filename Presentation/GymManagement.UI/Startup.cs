@@ -28,6 +28,7 @@ namespace GymManagement.UI
         {
             services.AddControllersWithViews();
             services.AddApplicationServices();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddInfrastructureServices(Configuration);
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
